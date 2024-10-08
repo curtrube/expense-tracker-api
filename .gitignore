@@ -1,0 +1,16 @@
+# General
+.DS_Store
+
+# Dependency directories
+node_modules/
+
+# Build directory
+dist/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# dotenv environment variable files
+!.env
+.env.*.local
+.env.local

@@ -1,0 +1,50 @@
+{
+  "name": "node-express-api-example",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist coverage node_modules tsconfig.tsbuildinfo",
+    "dev": "tsx ./src/main.ts",
+    "docker": "npm run docker:build && npm run docker:run",
+    "docker:build": "docker build -t node-express-api-example .",
+    "docker:kill": "docker ps --format '{{.Image}} {{.ID}}' | grep node-express-api-example | awk '{print $2}' | xargs docker kill",
+    "docker:run": "docker run node-express-api-example",
+    "docs": "typedoc",
+    "format": "prettier --write .",
+    "lint": "eslint . && markdownlint-cli2 \"**/*.md\" && prettier --check .",
+    "lint:fix": "eslint --fix --quiet .; markdownlint-cli2 \"**/*.md\" --fix; prettier --list-different --write .",
+    "start": "node dist/main.js",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.0",
+    "pg": "^8.13.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.11.1",
+    "@types/eslint__js": "^8.42.3",
+    "@types/eslint-config-prettier": "^6.11.3",
+    "@types/express": "^5.0.0",
+    "@types/pg": "^8.11.10",
+    "@types/supertest": "^6.0.2",
+    "@vitest/coverage-v8": "^2.1.2",
+    "eslint": "^9.11.1",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.10.0",
+    "markdownlint-cli2": "^0.14.0",
+    "prettier": "^3.3.3",
+    "supertest": "^7.0.0",
+    "tsx": "^4.19.1",
+    "typedoc": "^0.26.8",
+    "typescript": "^5.6.2",
+    "typescript-eslint": "^8.8.0",
+    "vitest": "^2.1.2"
+  }
+}
