@@ -20,4 +20,4 @@ COPY .env .env
 # Expose the port the app runs on
 EXPOSE 3000
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "start"]

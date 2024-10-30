@@ -1,11 +1,15 @@
 import pg from 'pg';
 import type { PoolClient, Pool, QueryResultRow } from 'pg';
 
-class DbService {
+interface IDbService {
+  query: <T extends QueryResultRow>(sql: string, values?: (boolean | number | string)[]) => Promise<T[]>;
+}
+
+class DbService implements IDbService {
   private readonly dbInstance: Pool;
 
-  constructor() {
-    this.dbInstance = new pg.Pool();
+  constructor(dbPool?: Pool) {
+    this.dbInstance = dbPool ?? new pg.Pool();
   }
 
   async query<T extends QueryResultRow>(sql: string, values?: (boolean | number | string)[]): Promise<T[]> {
@@ -16,8 +20,9 @@ class DbService {
       console.log(res);
       return res.rows;
     } catch (err) {
-      console.error(`Database query failed: ${err instanceof Error ? err.message : String(err)}`);
-      throw err;
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      console.error(`Database query failed: ${errorMessage}`);
+      throw new Error(errorMessage);
     } finally {
       if (client) {
         client.release();

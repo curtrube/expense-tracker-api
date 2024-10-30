@@ -52,7 +52,7 @@ export default tseslint.config(
       '@typescript-eslint/return-await': 'error',
       '@typescript-eslint/sort-type-constituents': 'error',
       '@typescript-eslint/switch-exhaustiveness-check': 'error',
-      'func-style': ['error', 'declaration'],
+      // 'func-style': ['error', 'declaration'],
     },
   },
 
