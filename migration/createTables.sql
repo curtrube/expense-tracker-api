@@ -1,7 +1,0 @@
-CREATE DATABASE expense_tracker;
-CREATE TABLE IF NOT EXISTS users(
-    id BIGSERIAL PRIMARY KEY NOT NULL,
-    merchant TEXT,
-    amount MONEY NOT NULL,
-    date DATE NOT NULL
-)
