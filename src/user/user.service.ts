@@ -1,63 +1,55 @@
-import { db } from '../db/db.js';
-import type { User } from './user.interface.js';
+import { catchError } from '../utils/catchError.js';
+import { db } from '../database/db.js';
+import type { User, DbUser } from './user.interface.js';
 import type { ICreateUserSchema } from './user.schema.js';
+
+function mapDbUserToUser(dbUser: DbUser): User {
+  return {
+    id: dbUser.id,
+    email: dbUser.email,
+    password: dbUser.password,
+    firstName: dbUser.first_name,
+    lastName: dbUser.last_name,
+    created: dbUser.created,
+    isActive: dbUser.is_active,
+    role: dbUser.role,
+  };
+}
 
 class UserService {
   async getUserById(id: number): Promise<User | null> {
-    const result = await db.query<User>(
-      `
-      SELECT id, email, password, first_name, last_name, created, is_active, role
-      FROM user_account
-      WHERE id = $1;
-      `,
-      [id],
-    );
-    const user = result[0];
-
-    if (!user) {
-      console.log(`Unable to fetch user no user with id: ${id} found`);
+    const sql = `
+        SELECT id, email, password, first_name, last_name, created, is_active, role
+        FROM user_account
+        WHERE id = $1;
+      `;
+    const [err, result] = await catchError(db.query<DbUser>(sql, [id]));
+    if (err) {
+      console.error(`An error occured: ${err}`);
+      return null;
+    } else if (!result[0]) {
+      console.log(`No user found with id: ${id}`);
       return null;
     }
-
-    return {
-      id: user.id,
-      email: user.email,
-      password: user.password,
-      firstName: user.first_name,
-      lastName: user.last_name,
-      created: user.created,
-      isActive: user.is_active,
-      role: user.role,
-    };
+    return mapDbUserToUser(result[0]);
   }
 
-  async CreateUser(userData: ICreateUserSchema): Promise<User | null> {
+  async createUser(userData: ICreateUserSchema): Promise<User | null> {
     const { email, password, firstName, lastName } = userData;
-    const values = [email, password, firstName, lastName, new Date(), true, 'user'];
-    const result = await db.query<User>(
-      `
+    const sql = `
       INSERT into user_account(email, password, first_name, last_name, created, is_active, role)
       VALUES($1, $2, $3, $4, $5, $6, $7)
       RETURNING *
-      `,
-      values,
-    );
-
-    const user = result[0];
-    if (!user) {
+    `;
+    const values = [email, password, firstName, lastName, new Date(), true, 'user'];
+    const [err, result] = await catchError(db.query<DbUser>(sql, values));
+    if (err) {
+      console.error(`Error while creating new user: ${err.message}`);
+      throw new Error();
+    } else if (!result[0]) {
       return null;
     }
-
-    return {
-      id: user.id,
-      email: user.email,
-      password: user.password,
-      firstName: user.first_name,
-      lastName: user.last_name,
-      created: user.created,
-      isActive: user.is_active,
-      role: user.role,
-    };
+    return mapDbUserToUser(result[0]);
   }
 }
 

@@ -8,3 +8,14 @@ export interface User {
   isActive: boolean;
   role: string;
 }
+
+export interface DbUser {
+  id: number;
+  email: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+  created: Date;
+  is_active: boolean;
+  role: string;
+}

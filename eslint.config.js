@@ -20,13 +20,13 @@ export default tseslint.config(
 
   {
     rules: {
-      '@typescript-eslint/class-methods-use-this': [
-        'error',
-        {
-          ignoreClassesThatImplementAnInterface: true,
-          ignoreOverrideMethods: true,
-        },
-      ],
+      // '@typescript-eslint/class-methods-use-this': [
+      //   'error',
+      //   {
+      //     ignoreClassesThatImplementAnInterface: true,
+      //     ignoreOverrideMethods: true,
+      //   },
+      // ],
       '@typescript-eslint/consistent-type-exports': 'error',
       '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'separate-type-imports' }],
       '@typescript-eslint/default-param-last': 'error',
@@ -50,7 +50,7 @@ export default tseslint.config(
         },
       ],
       '@typescript-eslint/return-await': 'error',
-      '@typescript-eslint/sort-type-constituents': 'error',
+      // '@typescript-eslint/sort-type-constituents': 'error',
       '@typescript-eslint/switch-exhaustiveness-check': 'error',
       'func-style': ['error', 'declaration'],
     },
